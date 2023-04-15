@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>E.SUN 投票項目系統</title>
+
+    <link rel="stylesheet" th:href="@{/styles/front_vote.css}" href="./styles/front_vote.css">
+
+    <script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js}" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function (){
+            $('#vote_btn').on('click', function(e) {
+                e.preventDefault();
+
+                let formData = {
+                    name: $('input[name=name]').val(),
+                    voteId: $('div[name=vote]').attr('id')
+                };
+
+                $.ajax({
+                    url: '/addVote',
+                    type: 'POST',
+                    data: JSON.stringify(formData),
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log(response);
+                        alert("投票成功!");
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus, errorThrown);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <form onsubmit="alert('投票成功!')" method="post" id="addVote" enctype="multipart/form-data" action="/addVote">
+        <fieldset>
+            <legend><h3>投票項目系統</h3></legend>
+            <div class="vote_system" style="margin-bottom: 30px; margin-top: 10px">
+                <label><b>請輸入姓名</b></label>
+                <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="姓名"
+                >
+            </div>
+            <div th:each="project : ${project}">
+                <div class="vote_project">
+                    <h4 th:text="${project.voteName}"></h4>
+                    <div name="vote" class="vote_btn" th:id="${project.voteId}">
+                        <a th:href="@{/addVote(voteId=${project.voteId})}">
+                        <button type="submit" class="vote_btn" id="vote_btn">投票</button>
+                        </a>
+                        <p id="click-count" style="float: right; font-size: 15px" th:text="${project.voteTime} + '票'"></p>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+    <script>
+        let button = document.getElementById("vote_btn");
+        let clickCount = 0;
+        let display = document.getElementById("click-count");
+        if(localStorage.getItem("clickCount")){
+            clickCount = parseInt(localStorage.getItem("clickCount"));
+        }
+        button.addEventListener("click", function (){
+            clickCount++;
+            display.innerHTML = clickCount + " 票";
+            localStorage.setItem("clickCount", clickCount);
+        });
+    </script>
+
+</body>
+</html>

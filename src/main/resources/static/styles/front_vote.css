@@ -1,0 +1,33 @@
+html{
+    background: url("../images/e_sun.jpg");
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+fieldset {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+    color: darkseagreen;
+    border-color: #1ba87e;
+    margin: auto;
+    align-items: center;
+    align-content: center;
+    transform: translateY(70px);
+}
+
+.vote_btn {
+    width: 100px;
+    height: 30px;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    background-color: darkseagreen;
+    font-size: 14px;
+}
+
+h4{
+    color: #0f401b;
+}
